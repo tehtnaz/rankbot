@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "module": "ES2022",
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
+        "target": "ES2022",
+        "lib": ["ES2022"],
+
+        "strict": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "resolveJsonModule": true,
+        "outDir": "package",
+        "skipLibCheck": true
+    },
+    "include": ["src/**/**/*.ts"]
+}

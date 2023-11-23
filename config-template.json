@@ -1,0 +1,13 @@
+{
+    "token": "token",
+    "app_id": "app_id",
+
+    "token_beta": "token",
+    "app_id_beta": "app_id_beta",
+
+    "dev_server_id": "dev_server_id",
+
+    "debug": true,
+
+    "disable_cooldown": false
+}
