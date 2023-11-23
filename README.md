@@ -5,7 +5,11 @@ A basic leveling bot for Discord created by @tehtnaz
 ## How to host it for yourself
 - Rename config-template to config
 - Update values in config (I think it might break if you dont fill in all values properly)
-- Run `npm start`
+- Install node.js (18 LTS is what's used here, although 20 LTS should work)
+- Install packages - `npm install`
+- Compile for typescript - `npx tsc`
+- Create new database - `node ./package/dbInit.js --force`
+- Run - `npm start`
 
 ## How to use
 - You can assign roles for different XP levels
