@@ -3,7 +3,7 @@
 A basic leveling bot for Discord created by @tehtnaz
 
 ## How to host it for yourself
-- Rename config-template to config
+- Rename `config-template.json` to `config.json`
 - Update values in config (I think it might break if you dont fill in all values properly)
 - Install node.js (18 LTS is what's used here, although 20 LTS should work)
 - Install packages - `npm install`
