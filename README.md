@@ -2,6 +2,11 @@
 
 A basic leveling bot for Discord created by @tehtnaz
 
+## How to host it for yourself
+- Rename config-template to config
+- Update values in config (I think it might break if you dont fill in all values properly)
+- Run `npm start`
+
 ## How to use
 - You can assign roles for different XP levels
 - A level 0 role represents a join role (a role which is automatically assignment upon joining)
