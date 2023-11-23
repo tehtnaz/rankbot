@@ -9,6 +9,7 @@ A basic leveling bot for Discord created by @tehtnaz
 - Install packages - `npm install`
 - Compile for typescript - `npx tsc`
 - Create new database - `node ./package/dbInit.js --force`
+- Deploy commands - `npm run deploy`
 - Run - `npm start`
 
 ## How to use
