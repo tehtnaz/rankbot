@@ -9,9 +9,23 @@
         "strict": true,
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
-        "resolveJsonModule": true,
+        //"resolveJsonModule": true,
         "outDir": "package",
-        "skipLibCheck": true
+        "skipLibCheck": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "noImplicitOverride": true,
+
+        "allowUnreachableCode": false,
+        "allowUnusedLabels": false,
+        // "exactOptionalPropertyTypes": true,
+        "noPropertyAccessFromIndexSignature": true,
+        "noUnusedLocals": true
+        // "noUnusedParameters":true,
+
+        // "noImplicitReturns": true
+        // "noUncheckedIndexedAccess" : true
     },
-    "include": ["src/**/**/*.ts"]
+    "include": ["src/**/**/*.ts"],
+    "exclude": ["src/later-reuse/*.ts", "src/old/*.ts"]
 }

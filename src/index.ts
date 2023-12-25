@@ -1,4 +1,5 @@
 import { Client, GatewayIntentBits, Message, Collection } from "discord.js";
+import "reflect-metadata";
 import { Sequelize } from "sequelize";
 import { PersonXP } from "./models/PersonXP.js";
 import { findJoinRoleID, getClosestRoleID, LevelRole } from "./models/LevelRole.js";

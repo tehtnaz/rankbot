@@ -1,32 +1,22 @@
-import { Model, InferAttributes, InferCreationAttributes, Sequelize, DataTypes } from "sequelize";
-export class LevelRole extends Model<InferAttributes<LevelRole>, InferCreationAttributes<LevelRole>> {
-    declare server_id: string;
-    //role id
-    declare role_id: string;
-    //level
-    declare level: number;
+import {InferAttributes, InferCreationAttributes} from "sequelize"
+import { Model, DataType, Table, Column, AllowNull, Default } from "sequelize-typescript";
 
-    public static m_init(sequelize: Sequelize) {
-        LevelRole.init(
-            {
-                server_id: {
-                    type: DataTypes.STRING,
-                    allowNull: false
-                },
-                role_id: {
-                    type: DataTypes.STRING,
-                    allowNull: false
-                },
-                level: {
-                    type: DataTypes.NUMBER,
-                    allowNull: false,
-                    defaultValue: 0
-                }
-            },
-            { sequelize, timestamps: false }
-        );
-    }
+@Table({ freezeTableName: true, paranoid: false, timestamps: false })
+export class LevelRole extends Model<InferAttributes<LevelRole>, InferCreationAttributes<LevelRole>> {
+    @AllowNull(false)
+    @Column(DataType.STRING(64))
+    declare server_id: string;
+
+    @AllowNull(false)
+    @Column(DataType.STRING(64))
+    declare role_id: string;
+
+    @AllowNull(false)
+    @Column(DataType.NUMBER)
+    @Default(0)
+    declare level: number;
 }
+export default LevelRole;
 
 export async function getClosestRoleID(level: number, server_id: string): Promise<string | undefined> {
     const server_roles = await LevelRole.findAll({

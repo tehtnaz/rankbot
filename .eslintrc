@@ -9,5 +9,11 @@
     "rules": {
         "deprecation/deprecation": "warn"
     },
-    "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "prettier"]
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/stylistic",
+        "prettier",
+        "plugin:deprecation/recommended"
+    ]
 }

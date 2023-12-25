@@ -1,9 +1,15 @@
-import { Model, InferAttributes, InferCreationAttributes, Sequelize, DataTypes } from "sequelize";
+import {InferAttributes, InferCreationAttributes} from "sequelize"
+import { Model, Sequelize, DataType, Table, Column, AllowNull } from "sequelize-typescript";
 import { logInfo } from "../helpers/logging-helpers.js";
+
+@Table({ freezeTableName: true, paranoid: false, timestamps: false })
 export class PersonXP extends Model<InferAttributes<PersonXP>, InferCreationAttributes<PersonXP>> {
-    //user id
+    @AllowNull(false)
+    @Column(DataType.STRING(64))
     declare user_id: string;
-    //server Id
+
+    @AllowNull(false)
+    @Column(DataType.STRING(64))
     declare server_id: string;
     //xp amount
     declare xp: number;
@@ -102,3 +108,4 @@ export class PersonXP extends Model<InferAttributes<PersonXP>, InferCreationAttr
         }
     }
 }
+export default PersonXP;
