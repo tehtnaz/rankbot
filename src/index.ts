@@ -1,19 +1,27 @@
 import { Client, GatewayIntentBits, Message, Collection } from "discord.js";
 import "reflect-metadata";
-import { Sequelize } from "sequelize";
+import { Sequelize } from "sequelize-typescript";
 import { PersonXP } from "./models/PersonXP.js";
 import { findJoinRoleID, getClosestRoleID, LevelRole } from "./models/LevelRole.js";
 import fs from "fs";
 import { getRandomLevelUpMessage } from "./helpers/responses.js";
 import chalk from "chalk";
-import { logDebug, logError, logInfo } from "./helpers/logging-helpers.js";
+import { logDebug, logError, logInfo, sqlLogger } from "./helpers/logging-helpers.js";
 import { CommandFile } from "./types.js";
 
-const sequelize = new Sequelize("database", "username", "password", {
-    host: "localhost",
+// const sequelize = new Sequelize("database", "username", "password", {
+//     host: "localhost",
+//     dialect: "sqlite",
+//     logging: false,
+//     storage: "database.sqlite"
+// });
+new Sequelize({
     dialect: "sqlite",
-    logging: false,
-    storage: "database.sqlite"
+    storage: "database.sqlite",
+    logging: sqlLogger,
+    models: [LevelRole, PersonXP]
+}).afterInit("confirm_hook", () => {
+    logInfo(__filename, "Database successfully started.");
 });
 
 const config = JSON.parse(fs.readFileSync("./config.json").toString());
@@ -80,9 +88,6 @@ client.once("ready", async () => {
             if (err) logError("index.js", err);
         });
     }
-
-    PersonXP.m_init(sequelize);
-    LevelRole.m_init(sequelize);
     //const StoredXp = await PersonXP.findAll();
     //StoredXp.forEach(item => SetMemUserXp(item));
 

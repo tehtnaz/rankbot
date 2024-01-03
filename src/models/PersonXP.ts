@@ -1,5 +1,5 @@
-import {InferAttributes, InferCreationAttributes} from "sequelize"
-import { Model, Sequelize, DataType, Table, Column, AllowNull } from "sequelize-typescript";
+import { InferAttributes, InferCreationAttributes } from "sequelize";
+import { Model, DataType, Table, Column, AllowNull, Default } from "sequelize-typescript";
 import { logInfo } from "../helpers/logging-helpers.js";
 
 @Table({ freezeTableName: true, paranoid: false, timestamps: false })
@@ -11,58 +11,36 @@ export class PersonXP extends Model<InferAttributes<PersonXP>, InferCreationAttr
     @AllowNull(false)
     @Column(DataType.STRING(64))
     declare server_id: string;
-    //xp amount
+
+    @AllowNull(false)
+    @Column(DataType.INTEGER)
+    @Default(0)
     declare xp: number;
-    //msg count
+
+    @AllowNull(false)
+    @Column(DataType.INTEGER)
+    @Default(0)
     declare msg: number;
-    //counted msg
+
+    @AllowNull(false)
+    @Column(DataType.INTEGER)
+    @Default(0)
     declare counted_msg: number;
-    //last msg
-    declare date: number;
-    //level
+
+    @AllowNull(false)
+    @Column(DataType.INTEGER)
+    declare date: number; // UNIX timestamp of last sent msg
+
+    @AllowNull(false)
+    @Column(DataType.INTEGER)
+    @Default(0)
     declare lvl: number;
-    //xp until next level
+
+    @AllowNull(false)
+    @Column(DataType.INTEGER)
+    @Default(0)
     declare lvlxp: number;
 
-    public static m_init(sequelize: Sequelize) {
-        PersonXP.init(
-            {
-                user_id: {
-                    type: DataTypes.STRING,
-                    allowNull: false
-                },
-                server_id: {
-                    type: DataTypes.STRING,
-                    allowNull: false
-                },
-                xp: {
-                    type: DataTypes.NUMBER,
-                    defaultValue: 0
-                },
-                msg: {
-                    type: DataTypes.NUMBER,
-                    defaultValue: 0
-                },
-                counted_msg: {
-                    type: DataTypes.NUMBER,
-                    defaultValue: 0
-                },
-                lvl: {
-                    type: DataTypes.NUMBER,
-                    defaultValue: 0
-                },
-                lvlxp: {
-                    type: DataTypes.NUMBER,
-                    defaultValue: 0
-                },
-                date: {
-                    type: DataTypes.DATE,
-                    defaultValue: 0
-                }
-            },
-            { sequelize, timestamps: false }
-        );
-    }
     public messageUpdate_And_GainXp(min_xp: number, max_xp: number) {
         const xpGain = Math.ceil(Math.random() * (max_xp - min_xp) + min_xp);
         this.xp += xpGain;
