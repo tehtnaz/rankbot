@@ -2,6 +2,8 @@
 
 A basic leveling bot for Discord created by @tehtnaz
 
+ rankbot © 2024 by Jase Beaumont is licensed under CC BY-NC-SA 4.0 
+
 ## How to host it for yourself
 
 -   Rename `config-template.json` to `config.json`
