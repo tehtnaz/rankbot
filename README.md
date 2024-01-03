@@ -31,3 +31,11 @@ rankbot © 2024 by Jase Beaumont is licensed under CC BY-NC-SA 4.0
 
 (1) if you cannot detect if they’re boosting server, use particular role for assigning (AKA make it a global feature that you can make certain roles multiply XP
 this can be enabled/disabled using similar settings system to soundbot
+
+## How to transfer from MEE6
+
+    1. `npx tsc`
+    2. `npm run mee6ripper <max_page_num> <server_id>`
+    3. Make sure database.sqlite already exists, otherwise run `node ./package/dbInit.js --force`
+    4. `npm run mee6ripper transfer`
+

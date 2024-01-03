@@ -123,7 +123,6 @@ client.on("messageCreate", async (message: Message) => {
             server_id: message.guildId,
             user_id: message.author.id,
             xp: 0,
-            msg: 0,
             counted_msg: 1,
             date: Date.now(),
             lvl: 0,
@@ -144,7 +143,7 @@ client.on("messageCreate", async (message: Message) => {
         user.messageUpdate_And_GainXp(7, 12);
     }
 
-    if (user.checkLevelUp()) {
+    if (user.checkLevelUp(true)) {
         let levelUp = "";
         const role_id = await getClosestRoleID(user.lvl, message.guildId);
         if (role_id !== undefined && !message.member.roles.cache.has(role_id)) {

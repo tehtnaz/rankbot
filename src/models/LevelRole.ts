@@ -1,7 +1,7 @@
 import { InferAttributes, InferCreationAttributes } from "sequelize";
 import { Model, DataType, Table, Column, AllowNull, Default } from "sequelize-typescript";
 
-@Table({ freezeTableName: true, paranoid: false, timestamps: false })
+@Table({ freezeTableName: false, paranoid: false, timestamps: false })
 export class LevelRole extends Model<InferAttributes<LevelRole>, InferCreationAttributes<LevelRole>> {
     @AllowNull(false)
     @Column(DataType.STRING(64))
@@ -12,8 +12,8 @@ export class LevelRole extends Model<InferAttributes<LevelRole>, InferCreationAt
     declare role_id: string;
 
     @AllowNull(false)
-    @Column(DataType.INTEGER)
     @Default(0)
+    @Column(DataType.INTEGER)
     declare level: number;
 }
 export default LevelRole;

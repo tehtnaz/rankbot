@@ -2,7 +2,7 @@ import { InferAttributes, InferCreationAttributes } from "sequelize";
 import { Model, DataType, Table, Column, AllowNull, Default } from "sequelize-typescript";
 import { logInfo } from "../helpers/logging-helpers.js";
 
-@Table({ freezeTableName: true, paranoid: false, timestamps: false })
+@Table({ freezeTableName: false, paranoid: false, timestamps: false })
 export class PersonXP extends Model<InferAttributes<PersonXP>, InferCreationAttributes<PersonXP>> {
     @AllowNull(false)
     @Column(DataType.STRING(64))
@@ -13,18 +13,13 @@ export class PersonXP extends Model<InferAttributes<PersonXP>, InferCreationAttr
     declare server_id: string;
 
     @AllowNull(false)
-    @Column(DataType.INTEGER)
     @Default(0)
+    @Column(DataType.INTEGER)
     declare xp: number;
 
     @AllowNull(false)
-    @Column(DataType.INTEGER)
     @Default(0)
-    declare msg: number;
-
-    @AllowNull(false)
     @Column(DataType.INTEGER)
-    @Default(0)
     declare counted_msg: number;
 
     @AllowNull(false)
@@ -32,29 +27,30 @@ export class PersonXP extends Model<InferAttributes<PersonXP>, InferCreationAttr
     declare date: number; // UNIX timestamp of last sent msg
 
     @AllowNull(false)
-    @Column(DataType.INTEGER)
     @Default(0)
+    @Column(DataType.INTEGER)
     declare lvl: number;
 
     @AllowNull(false)
-    @Column(DataType.INTEGER)
     @Default(0)
+    @Column(DataType.INTEGER)
     declare lvlxp: number;
 
     public messageUpdate_And_GainXp(min_xp: number, max_xp: number) {
         const xpGain = Math.ceil(Math.random() * (max_xp - min_xp) + min_xp);
         this.xp += xpGain;
         this.lvlxp += xpGain;
-        this.msg++;
+        this.counted_msg++;
         this.date = Date.now();
     }
-    public checkLevelUp(): boolean {
-        if (this.lvlxp > 5 * Math.pow(this.lvl, 2) + 50 * this.lvl + 100) {
-            logInfo("PersonXP.js", "previous xp: " + this.lvlxp);
-            this.lvlxp -= 5 * Math.pow(this.lvl, 2) + 50 * this.lvl + 100;
-            logInfo(
+    public checkLevelUp(logOutput: boolean): boolean {
+        const calc = 5 * Math.pow(this.lvl, 2) + 50 * this.lvl + 100
+        if (this.lvlxp > calc) {
+            if(logOutput) logInfo("PersonXP.js", "previous xp: " + this.lvlxp);
+            this.lvlxp -= calc;
+            if(logOutput) logInfo(
                 "PersonXP.js",
-                `removed ${5 * Math.pow(this.lvl, 2) + 50 * this.lvl + 100} xp during level up
+                `removed ${calc} xp during level up
                         current xp: ${this.lvlxp}`
             );
             this.lvl++;
@@ -66,12 +62,14 @@ export class PersonXP extends Model<InferAttributes<PersonXP>, InferCreationAttr
     public xpUntilLevelUp(): number {
         return 5 * Math.pow(this.lvl, 2) + 50 * this.lvl + 100 - this.lvlxp;
     }
-    public addXP(xp: number) {
+    public addXP(xp: number, dontLogOutput?: boolean) {
         this.xp += xp;
         this.lvlxp += xp;
-        while (this.checkLevelUp()) {
-            /**/
+        let levelUpCount = 0;
+        while (this.checkLevelUp(false)) {
+            levelUpCount++;
         }
+        if(!dontLogOutput) logInfo("PersonXP.js", `Added ${levelUpCount} level(s) to ${this.user_id} on server ${this.server_id}`);
     }
     public removeXP(remove_xp: number) {
         this.lvlxp = this.xp;
@@ -81,7 +79,7 @@ export class PersonXP extends Model<InferAttributes<PersonXP>, InferCreationAttr
         if (this.lvlxp < 0) this.lvlxp = 0;
 
         this.lvl = 0;
-        while (this.checkLevelUp()) {
+        while (this.checkLevelUp(false)) {
             /**/
         }
     }

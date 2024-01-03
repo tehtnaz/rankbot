@@ -47,7 +47,7 @@ export default {
                         )
                         .addFields(
                             { name: "XP", value: item.xp.toString(), inline: true },
-                            { name: "Messages", value: item.msg.toString(), inline: true }
+                            { name: "Messages", value: item.counted_msg.toString(), inline: true }
                         )
                         .addFields([
                             {
