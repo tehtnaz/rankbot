@@ -34,7 +34,7 @@ this can be enabled/disabled using similar settings system to soundbot
 
 ## How to transfer from MEE6
 
-    1. `npx tsc`
-    2. `npm run mee6ripper <max_page_num> <server_id>`
-    3. Make sure database.sqlite already exists, otherwise run `node ./package/dbInit.js --force`
-    4. `npm run mee6ripper transfer`
+    1. npx tsc
+    2. npm run mee6ripper <max_page_num> <server_id>
+    3. Make sure database.sqlite already exists, otherwise run node ./package/dbInit.js --force
+    4. npm run mee6ripper transfer
