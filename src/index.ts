@@ -8,6 +8,7 @@ import { getRandomLevelUpMessage } from "./helpers/responses.js";
 import chalk from "chalk";
 import { logDebug, logError, logInfo, sqlLogger } from "./helpers/logging-helpers.js";
 import { CommandFile } from "./types.js";
+import { sendHeartbeat } from "./helpers/heartbeat.js";
 
 // const sequelize = new Sequelize("database", "username", "password", {
 //     host: "localhost",
@@ -92,6 +93,8 @@ client.once("ready", async () => {
     //StoredXp.forEach(item => SetMemUserXp(item));
 
     //setInterval(SaveXpData, 5000)
+
+    sendHeartbeat();
 });
 
 client.on("messageCreate", async (message: Message) => {
@@ -191,10 +194,14 @@ client.on("interactionCreate", async (interaction) => {
                     content: ":interrobang: There was an error while executing this command!",
                     ephemeral: true
                 });
-            else
+            else if (!interaction.deferred)
                 await interaction.followUp({
                     content: ":interrobang: There was an error while executing this command!",
                     ephemeral: true
+                });
+            else
+                await interaction.editReply({
+                    content: ":interrobang: There was an error while executing this command!"
                 });
         } catch (err) {
             logError("index.js", err);
