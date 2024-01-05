@@ -44,15 +44,16 @@ export class PersonXP extends Model<InferAttributes<PersonXP>, InferCreationAttr
         this.date = Date.now();
     }
     public checkLevelUp(logOutput: boolean): boolean {
-        const calc = 5 * Math.pow(this.lvl, 2) + 50 * this.lvl + 100
+        const calc = 5 * Math.pow(this.lvl, 2) + 50 * this.lvl + 100;
         if (this.lvlxp > calc) {
-            if(logOutput) logInfo("PersonXP.js", "previous xp: " + this.lvlxp);
+            if (logOutput) logInfo("PersonXP.js", "previous xp: " + this.lvlxp);
             this.lvlxp -= calc;
-            if(logOutput) logInfo(
-                "PersonXP.js",
-                `removed ${calc} xp during level up
+            if (logOutput)
+                logInfo(
+                    "PersonXP.js",
+                    `removed ${calc} xp during level up
                         current xp: ${this.lvlxp}`
-            );
+                );
             this.lvl++;
             return true;
         } else {
@@ -69,7 +70,8 @@ export class PersonXP extends Model<InferAttributes<PersonXP>, InferCreationAttr
         while (this.checkLevelUp(false)) {
             levelUpCount++;
         }
-        if(!dontLogOutput) logInfo("PersonXP.js", `Added ${levelUpCount} level(s) to ${this.user_id} on server ${this.server_id}`);
+        if (!dontLogOutput)
+            logInfo("PersonXP.js", `Added ${levelUpCount} level(s) to ${this.user_id} on server ${this.server_id}`);
     }
     public removeXP(remove_xp: number) {
         this.lvlxp = this.xp;
