@@ -109,6 +109,7 @@ async function ParseLevelsIntoRanges(serverId: string, maxPageNum: number) {
 }
 
 async function ParseLevelsIntoDatabase(serverId: string, maxPageNum: number) {
+    
     await new Sequelize({
         dialect: "sqlite",
         storage: "mee6levels.sqlite",
@@ -117,9 +118,11 @@ async function ParseLevelsIntoDatabase(serverId: string, maxPageNum: number) {
     }).sync({ force: true });
     console.log("\n-- Getting and converting all levels... this may take a while! --");
     const levels = await GetAllLevels(serverId, maxPageNum);
+    console.time("time");
     const dontOutput = process.argv.includes("silent");
+    const promsies: Promise<any>[] = []
     for (const personLevel of levels) {
-        const personXp = await PersonXP.create({
+        const personXp = PersonXP.build({
             user_id: personLevel.id,
             xp: 0,
             counted_msg: personLevel.message_count,
@@ -127,12 +130,14 @@ async function ParseLevelsIntoDatabase(serverId: string, maxPageNum: number) {
             lvl: 0,
             lvlxp: 0,
             server_id: serverId
-        });
+        })
         personXp.addXP(personLevel.xp, true);
-        personXp.save();
-        if (dontOutput === false) process.stdout.write("\rCreated new PersonXP for " + personLevel.id);
+            if (dontOutput === false) process.stdout.write("\rCreated new PersonXP for " + personLevel.id);
+        promsies.push(personXp.save());
     }
-    process.stdout.write("\n");
+    await Promise.all(promsies);
+    process.stdout.write("\nDone.\n");
+    console.timeEnd("time")
 }
 
 async function TransferAllDataIntoDatabase() {

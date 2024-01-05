@@ -44,7 +44,7 @@ export class PersonXP extends Model<InferAttributes<PersonXP>, InferCreationAttr
         this.date = Date.now();
     }
     public checkLevelUp(logOutput: boolean): boolean {
-        const calc = 5 * Math.pow(this.lvl, 2) + 50 * this.lvl + 100;
+        const calc = 5 * this.lvl * this.lvl + 50 * this.lvl + 100;
         if (this.lvlxp > calc) {
             if (logOutput) logInfo("PersonXP.js", "previous xp: " + this.lvlxp);
             this.lvlxp -= calc;
@@ -61,7 +61,7 @@ export class PersonXP extends Model<InferAttributes<PersonXP>, InferCreationAttr
         }
     }
     public xpUntilLevelUp(): number {
-        return 5 * Math.pow(this.lvl, 2) + 50 * this.lvl + 100 - this.lvlxp;
+        return 5 * this.lvl * this.lvl + 50 * this.lvl + 100 - this.lvlxp;
     }
     public addXP(xp: number, dontLogOutput?: boolean) {
         this.xp += xp;
