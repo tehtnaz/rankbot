@@ -1,78 +1,59 @@
-import { Model, InferAttributes, InferCreationAttributes, Sequelize, DataTypes } from "sequelize";
+import { InferAttributes, InferCreationAttributes } from "sequelize";
+import { Model, DataType, Table, Column, AllowNull, Default } from "sequelize-typescript";
 import { logInfo } from "../helpers/logging-helpers.js";
+
+@Table({ freezeTableName: false, paranoid: false, timestamps: false })
 export class PersonXP extends Model<InferAttributes<PersonXP>, InferCreationAttributes<PersonXP>> {
-    //user id
+    @AllowNull(false)
+    @Column(DataType.STRING(64))
     declare user_id: string;
-    //server Id
+
+    @AllowNull(false)
+    @Column(DataType.STRING(64))
     declare server_id: string;
-    //xp amount
+
+    @AllowNull(false)
+    @Default(0)
+    @Column(DataType.INTEGER)
     declare xp: number;
-    //msg count
-    declare msg: number;
-    //counted msg
+
+    @AllowNull(false)
+    @Default(0)
+    @Column(DataType.INTEGER)
     declare counted_msg: number;
-    //last msg
-    declare date: number;
-    //level
+
+    @AllowNull(false)
+    @Column(DataType.INTEGER)
+    declare date: number; // UNIX timestamp of last sent msg
+
+    @AllowNull(false)
+    @Default(0)
+    @Column(DataType.INTEGER)
     declare lvl: number;
-    //xp until next level
+
+    @AllowNull(false)
+    @Default(0)
+    @Column(DataType.INTEGER)
     declare lvlxp: number;
 
-    public static m_init(sequelize: Sequelize) {
-        PersonXP.init(
-            {
-                user_id: {
-                    type: DataTypes.STRING,
-                    allowNull: false
-                },
-                server_id: {
-                    type: DataTypes.STRING,
-                    allowNull: false
-                },
-                xp: {
-                    type: DataTypes.NUMBER,
-                    defaultValue: 0
-                },
-                msg: {
-                    type: DataTypes.NUMBER,
-                    defaultValue: 0
-                },
-                counted_msg: {
-                    type: DataTypes.NUMBER,
-                    defaultValue: 0
-                },
-                lvl: {
-                    type: DataTypes.NUMBER,
-                    defaultValue: 0
-                },
-                lvlxp: {
-                    type: DataTypes.NUMBER,
-                    defaultValue: 0
-                },
-                date: {
-                    type: DataTypes.DATE,
-                    defaultValue: 0
-                }
-            },
-            { sequelize, timestamps: false }
-        );
-    }
     public messageUpdate_And_GainXp(min_xp: number, max_xp: number) {
         const xpGain = Math.ceil(Math.random() * (max_xp - min_xp) + min_xp);
         this.xp += xpGain;
         this.lvlxp += xpGain;
-        this.msg++;
+        this.counted_msg++;
         this.date = Date.now();
     }
-    public checkLevelUp(): boolean {
-        if (this.lvlxp > 5 * Math.pow(this.lvl, 2) + 50 * this.lvl + 100) {
-            logInfo("PersonXP.js", "previous xp: " + this.lvlxp);
-            this.lvlxp -= 5 * Math.pow(this.lvl, 2) + 50 * this.lvl + 100;
-            logInfo(
-                "PersonXP.js",
-                `removed ${5 * Math.pow(this.lvl, 2) + 50 * this.lvl + 100} xp during level up
+    public checkLevelUp(logOutput: boolean): boolean {
+        const calc = 5 * Math.pow(this.lvl, 2) + 50 * this.lvl + 100;
+        if (this.lvlxp > calc) {
+            if (logOutput) logInfo("PersonXP.js", "previous xp: " + this.lvlxp);
+            this.lvlxp -= calc;
+            if (logOutput)
+                logInfo(
+                    "PersonXP.js",
+                    `removed ${calc} xp during level up
                         current xp: ${this.lvlxp}`
-            );
+                );
             this.lvl++;
             return true;
         } else {
@@ -82,12 +63,15 @@ export class PersonXP extends Model<InferAttributes<PersonXP>, InferCreationAttr
     public xpUntilLevelUp(): number {
         return 5 * Math.pow(this.lvl, 2) + 50 * this.lvl + 100 - this.lvlxp;
     }
-    public addXP(xp: number) {
+    public addXP(xp: number, dontLogOutput?: boolean) {
         this.xp += xp;
         this.lvlxp += xp;
-        while (this.checkLevelUp()) {
-            /**/
+        let levelUpCount = 0;
+        while (this.checkLevelUp(false)) {
+            levelUpCount++;
         }
+        if (!dontLogOutput)
+            logInfo("PersonXP.js", `Added ${levelUpCount} level(s) to ${this.user_id} on server ${this.server_id}`);
     }
     public removeXP(remove_xp: number) {
         this.lvlxp = this.xp;
@@ -97,8 +81,9 @@ export class PersonXP extends Model<InferAttributes<PersonXP>, InferCreationAttr
         if (this.lvlxp < 0) this.lvlxp = 0;
 
         this.lvl = 0;
-        while (this.checkLevelUp()) {
+        while (this.checkLevelUp(false)) {
             /**/
         }
     }
 }
+export default PersonXP;

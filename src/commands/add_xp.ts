@@ -26,7 +26,6 @@ export default {
                 user_id: user.id,
                 server_id: interaction.guildId,
                 xp: 0,
-                msg: 0,
                 counted_msg: 0,
                 date: Date.now(),
                 lvl: 0,

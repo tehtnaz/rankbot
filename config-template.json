@@ -9,5 +9,7 @@
 
     "debug": true,
 
-    "disable_cooldown": false
+    "disable_cooldown": false,
+
+    "status_heartbeat_link": "link_to_heartbeat_url"
 }

@@ -1,13 +1,25 @@
+WRITING STYLE
+--------------
+
 Description begins with verb in 3rd person present tense
     option descriptions don't have "the"
     "track or playlist" or "song/playlist" is how you write it
-    next time reviewing choose whether to use "UserPlaylist" or "the playlist saved to your account"
+    when referring to UserPlaylists either mention directly "UserPlaylist" or just "playlist"
 
 Command responses (if not errors) beings with verb Past participle, 
 	end with no punctuation, or exclamation mark when it involves playing status (/leave, pause, resume)
 	start with "successfully" if it involves a database
 
 Command responses (error) Explain why error happened
+	:x: Denied permission
 	:bangbang: Fatal Error, usually caused by user, ephemeral message, ends with exclamation mark
 	:interrobang: Unknown error, usually caused by bad code, non-ephemeral message, ends with period
 	one space after emote text
+
+
+
+CODE STYLE
+--------------
+
+No functions outside of command files may reply to interactions
+EXCEPTIONS: (none)

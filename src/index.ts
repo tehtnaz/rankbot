@@ -1,18 +1,28 @@
 import { Client, GatewayIntentBits, Message, Collection } from "discord.js";
-import { Sequelize } from "sequelize";
+import "reflect-metadata";
+import { Sequelize } from "sequelize-typescript";
 import { PersonXP } from "./models/PersonXP.js";
 import { findJoinRoleID, getClosestRoleID, LevelRole } from "./models/LevelRole.js";
 import fs from "fs";
 import { getRandomLevelUpMessage } from "./helpers/responses.js";
 import chalk from "chalk";
-import { logDebug, logError, logInfo } from "./helpers/logging-helpers.js";
+import { logDebug, logError, logInfo, sqlLogger } from "./helpers/logging-helpers.js";
 import { CommandFile } from "./types.js";
+import { sendHeartbeat } from "./helpers/heartbeat.js";
 
-const sequelize = new Sequelize("database", "username", "password", {
-    host: "localhost",
+// const sequelize = new Sequelize("database", "username", "password", {
+//     host: "localhost",
+//     dialect: "sqlite",
+//     logging: false,
+//     storage: "database.sqlite"
+// });
+new Sequelize({
     dialect: "sqlite",
-    logging: false,
-    storage: "database.sqlite"
+    storage: "database.sqlite",
+    logging: sqlLogger,
+    models: [LevelRole, PersonXP]
+}).afterInit("confirm_hook", () => {
+    logInfo(__filename, "Database successfully started.");
 });
 
 const config = JSON.parse(fs.readFileSync("./config.json").toString());
@@ -79,13 +89,12 @@ client.once("ready", async () => {
             if (err) logError("index.js", err);
         });
     }
-
-    PersonXP.m_init(sequelize);
-    LevelRole.m_init(sequelize);
     //const StoredXp = await PersonXP.findAll();
     //StoredXp.forEach(item => SetMemUserXp(item));
 
     //setInterval(SaveXpData, 5000)
+
+    sendHeartbeat();
 });
 
 client.on("messageCreate", async (message: Message) => {
@@ -117,7 +126,6 @@ client.on("messageCreate", async (message: Message) => {
             server_id: message.guildId,
             user_id: message.author.id,
             xp: 0,
-            msg: 0,
             counted_msg: 1,
             date: Date.now(),
             lvl: 0,
@@ -138,7 +146,7 @@ client.on("messageCreate", async (message: Message) => {
         user.messageUpdate_And_GainXp(7, 12);
     }
 
-    if (user.checkLevelUp()) {
+    if (user.checkLevelUp(true)) {
         let levelUp = "";
         const role_id = await getClosestRoleID(user.lvl, message.guildId);
         if (role_id !== undefined && !message.member.roles.cache.has(role_id)) {
@@ -186,10 +194,14 @@ client.on("interactionCreate", async (interaction) => {
                     content: ":interrobang: There was an error while executing this command!",
                     ephemeral: true
                 });
-            else
+            else if (!interaction.deferred)
                 await interaction.followUp({
                     content: ":interrobang: There was an error while executing this command!",
                     ephemeral: true
+                });
+            else
+                await interaction.editReply({
+                    content: ":interrobang: There was an error while executing this command!"
                 });
         } catch (err) {
             logError("index.js", err);
