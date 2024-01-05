@@ -1,15 +1,15 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { ChatInputCommandInteraction, PermissionFlagsBits } from "discord.js";
+import { PermissionFlagsBits } from "discord.js";
 import { LevelRole } from "../models/LevelRole.js";
 import { CommandFile } from "../types.js";
 
-export default {
+const command: CommandFile =  {
     data: new SlashCommandBuilder()
         .setName("clean_level_roles")
         .setDescription("Cleans up any deleted roles from the role list")
         .setDMPermission(false)
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-    async chatInputCommand(interaction: ChatInputCommandInteraction) {
+    async chatInputCommand(interaction) {
         if (interaction.guild === null || interaction.guildId === null) return;
 
         const roleList = await LevelRole.findAll({
@@ -26,4 +26,5 @@ export default {
         }
         await interaction.reply(`Removed ${deleted_num} role${deleted_num == 1 ? "" : "s"} from the list`);
     }
-} as CommandFile;
+}
+export default command;

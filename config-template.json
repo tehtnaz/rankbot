@@ -2,8 +2,8 @@
     "token": "token",
     "app_id": "app_id",
 
-    "token_beta": "token",
-    "app_id_beta": "app_id_beta",
+    "token_debug": "token",
+    "app_id_debug": "app_id_beta",
 
     "dev_server_id": "dev_server_id",
 
@@ -11,5 +11,6 @@
 
     "disable_cooldown": false,
 
-    "status_heartbeat_link": "link_to_heartbeat_url"
+    "status_heartbeat_link": "link_to_heartbeat_url",
+    "test_heartbeat_link": "link_to_heartbeat_url"
 }

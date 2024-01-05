@@ -122,15 +122,7 @@ async function ParseLevelsIntoDatabase(serverId: string, maxPageNum: number) {
     const dontOutput = process.argv.includes("silent");
     const promsies: Promise<any>[] = []
     for (const personLevel of levels) {
-        const personXp = PersonXP.build({
-            user_id: personLevel.id,
-            xp: 0,
-            counted_msg: personLevel.message_count,
-            date: 0,
-            lvl: 0,
-            lvlxp: 0,
-            server_id: serverId
-        })
+        const personXp = PersonXP.newPerson(serverId, personLevel.id, {counted_msg: personLevel.message_count, date: new Date(0).toISOString()})
         personXp.addXP(personLevel.xp, true);
             if (dontOutput === false) process.stdout.write("\rCreated new PersonXP for " + personLevel.id);
         promsies.push(personXp.save());
@@ -200,7 +192,7 @@ async function TransferAllDataIntoDatabase() {
                 server_id: personXp.server_id,
                 counted_msg: personXp.counted_msg,
                 xp: personXp.xp,
-                date: 0,
+                date: new Date(0).toISOString(),
                 lvl: personXp.lvl,
                 lvlxp: personXp.lvlxp
             })

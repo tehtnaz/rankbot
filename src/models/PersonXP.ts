@@ -23,8 +23,9 @@ export class PersonXP extends Model<InferAttributes<PersonXP>, InferCreationAttr
     declare counted_msg: number;
 
     @AllowNull(false)
-    @Column(DataType.INTEGER)
-    declare date: number; // UNIX timestamp of last sent msg
+    @Default(DataType.NOW)
+    @Column(DataType.DATE)
+    declare date: string; // UNIX timestamp of last sent msg
 
     @AllowNull(false)
     @Default(0)
@@ -36,12 +37,24 @@ export class PersonXP extends Model<InferAttributes<PersonXP>, InferCreationAttr
     @Column(DataType.INTEGER)
     declare lvlxp: number;
 
+    public static newPerson(guildId: string, userId: string, otherInfo?: {xp?: number, counted_msg?: number, date?: string, lvl?: number, lvlxp?: number}){
+        return PersonXP.build({
+            server_id: guildId,
+            user_id: userId,
+            xp: otherInfo?.xp ?? 0,
+            counted_msg: otherInfo?.counted_msg ?? 0,
+            date: otherInfo?.date ?? new Date().toISOString(),
+            lvl: otherInfo?.lvl ?? 0,
+            lvlxp: otherInfo?.lvlxp ?? 0
+        })
+    }
+
     public messageUpdate_And_GainXp(min_xp: number, max_xp: number) {
         const xpGain = Math.ceil(Math.random() * (max_xp - min_xp) + min_xp);
         this.xp += xpGain;
         this.lvlxp += xpGain;
         this.counted_msg++;
-        this.date = Date.now();
+        this.date = new Date().toISOString();
     }
     public checkLevelUp(logOutput: boolean): boolean {
         const calc = 5 * this.lvl * this.lvl + 50 * this.lvl + 100;

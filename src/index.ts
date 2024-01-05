@@ -30,7 +30,7 @@ const config = JSON.parse(fs.readFileSync("./config.json").toString());
 // intents + login
 const intents_array = [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers];
 const client = new Client({ intents: intents_array });
-if (config.debug) client.login(config.token_beta);
+if (config.debug) client.login(config.token_debug);
 else client.login(config.token);
 
 // import all the command files
@@ -68,7 +68,7 @@ function SetMemUserXp(personXp: PersonXP){
     console.log(personXp.server_id);
 }*/
 
-export const rb_version = "v0.3.0";
+export const rb_version = "v0.4.0";
 
 client.once("ready", async () => {
     const guild_list: string[] = [];
@@ -122,27 +122,17 @@ client.on("messageCreate", async (message: Message) => {
     user_id:, server_id, xp, msg, counted_msg, date, lvl, lvlxp
     */
     if (user === null) {
-        const new_user = await PersonXP.create({
-            server_id: message.guildId,
-            user_id: message.author.id,
-            xp: 0,
-            counted_msg: 1,
-            date: Date.now(),
-            lvl: 0,
-            lvlxp: 0
-        });
+        const new_user = PersonXP.newPerson(message.guild.id, message.member.id)
         new_user.messageUpdate_And_GainXp(7, 12);
-        new_user.save();
+        await new_user.save();
         return;
     }
 
     //log amount of ms since last msg
-    logDebug("index.js", `${message.author.id} (${message.author.username}): ${Date.now() - user.date}`);
-
-    user.counted_msg++;
+    logDebug("index.js", `${message.author.id} (${message.author.username}): ${Date.now() - new Date(user.date).getTime()}. ${user.date}`);
 
     //allow xp gain only every minute
-    if (Date.now() - user.date > 60000 || config.disable_cooldown) {
+    if (Date.now() - new Date(user.date).getTime() > 60000 || config.disable_cooldown) {
         user.messageUpdate_And_GainXp(7, 12);
     }
 
