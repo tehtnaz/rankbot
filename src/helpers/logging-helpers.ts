@@ -1,7 +1,5 @@
 import { ChatInputCommandInteraction } from "discord.js";
 import pino from "pino";
-// import { LevelWithSilent } from "pino"
-// import config from "../config.js";
 import fs from "fs";
 const config = JSON.parse(fs.readFileSync("config.json", "utf-8"));
 // import chalk from "chalk";
