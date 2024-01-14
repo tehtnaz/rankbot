@@ -41,7 +41,7 @@ interface RoleReward {
 const output_json = process.argv.includes("output_json");
 // const output_csv = process.argv.includes("output_csv");
 const transfer = process.argv.includes("transfer");
-const output_sql = !output_json && !transfer /* && !output_csv */;
+const output_sql = !output_json && !transfer; /* && !output_csv */
 
 const parsedNum = Number.parseInt(process.argv.slice(-2)[0]);
 const maxPageNum = Number.isNaN(parsedNum) ? 5 : parsedNum;
@@ -109,7 +109,6 @@ async function ParseLevelsIntoRanges(serverId: string, maxPageNum: number) {
 }
 
 async function ParseLevelsIntoDatabase(serverId: string, maxPageNum: number) {
-    
     await new Sequelize({
         dialect: "sqlite",
         storage: "mee6levels.sqlite",
@@ -120,16 +119,19 @@ async function ParseLevelsIntoDatabase(serverId: string, maxPageNum: number) {
     const levels = await GetAllLevels(serverId, maxPageNum);
     console.time("time");
     const dontOutput = process.argv.includes("silent");
-    const promsies: Promise<any>[] = []
+    const promsies: Promise<any>[] = [];
     for (const personLevel of levels) {
-        const personXp = PersonXP.newPerson(serverId, personLevel.id, {counted_msg: personLevel.message_count, date: new Date(0).toISOString()})
+        const personXp = PersonXP.newPerson(serverId, personLevel.id, {
+            counted_msg: personLevel.message_count,
+            date: new Date(0).toISOString()
+        });
         personXp.addXP(personLevel.xp, true);
-            if (dontOutput === false) process.stdout.write("\rCreated new PersonXP for " + personLevel.id);
+        if (dontOutput === false) process.stdout.write("\rCreated new PersonXP for " + personLevel.id);
         promsies.push(personXp.save());
     }
     await Promise.all(promsies);
     process.stdout.write("\nDone.\n");
-    console.timeEnd("time")
+    console.timeEnd("time");
 }
 
 async function TransferAllDataIntoDatabase() {

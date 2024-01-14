@@ -3,7 +3,7 @@ import { PermissionFlagsBits } from "discord.js";
 import { LevelRole } from "../models/LevelRole.js";
 import { CommandFile } from "../types.js";
 
-const command: CommandFile =  {
+const command: CommandFile = {
     data: new SlashCommandBuilder()
         .setName("set_level_role")
         .setDescription("Set the role for each level")
@@ -29,5 +29,5 @@ const command: CommandFile =  {
 
         await interaction.reply(`Set ${role.name} to level ${level}`);
     }
-}
+};
 export default command;

@@ -37,7 +37,11 @@ export class PersonXP extends Model<InferAttributes<PersonXP>, InferCreationAttr
     @Column(DataType.INTEGER)
     declare lvlxp: number;
 
-    public static newPerson(guildId: string, userId: string, otherInfo?: {xp?: number, counted_msg?: number, date?: string, lvl?: number, lvlxp?: number}){
+    public static newPerson(
+        guildId: string,
+        userId: string,
+        otherInfo?: { xp?: number; counted_msg?: number; date?: string; lvl?: number; lvlxp?: number }
+    ) {
         return PersonXP.build({
             server_id: guildId,
             user_id: userId,
@@ -46,7 +50,7 @@ export class PersonXP extends Model<InferAttributes<PersonXP>, InferCreationAttr
             date: otherInfo?.date ?? new Date().toISOString(),
             lvl: otherInfo?.lvl ?? 0,
             lvlxp: otherInfo?.lvlxp ?? 0
-        })
+        });
     }
 
     public messageUpdate_And_GainXp(min_xp: number, max_xp: number) {

@@ -5,7 +5,7 @@ import { getClosestRoleID } from "../models/LevelRole.js";
 import { PersonXP } from "../models/PersonXP.js";
 import { CommandFile } from "../types.js";
 
-const command: CommandFile =  {
+const command: CommandFile = {
     data: new SlashCommandBuilder()
         .setName("remove_xp")
         .setDescription("Remove xp from someone")
@@ -48,5 +48,5 @@ const command: CommandFile =  {
         }
         await interaction.reply(`Successfully removed ${xp} xp from ${user.username}`);
     }
-}
+};
 export default command;

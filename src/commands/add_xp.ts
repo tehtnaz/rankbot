@@ -5,7 +5,7 @@ import { getClosestRoleID } from "../models/LevelRole.js";
 import { PersonXP } from "../models/PersonXP.js";
 import { CommandFile } from "../types.js";
 
-const command: CommandFile =  {
+const command: CommandFile = {
     data: new SlashCommandBuilder()
         .setName("add_xp")
         .setDescription("Add xp to someone")
@@ -54,5 +54,5 @@ const command: CommandFile =  {
         }
         await interaction.reply(`Successfully added ${xp} xp to ${user.username}`);
     }
-}
+};
 export default command;

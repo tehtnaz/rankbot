@@ -6,7 +6,7 @@ import { getLeaderboardEmoji } from "../helpers/leaderboard-emoji.js";
 import { PersonXP } from "../models/PersonXP.js";
 import { CommandFile } from "../types.js";
 
-const command: CommandFile =  {
+const command: CommandFile = {
     data: new SlashCommandBuilder()
         .setName("rank")
         .setDescription("Fetch your own rank")
@@ -81,5 +81,5 @@ const command: CommandFile =  {
             );
         }
     }
-}
+};
 export default command;

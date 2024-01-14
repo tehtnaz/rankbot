@@ -5,7 +5,7 @@ import { LevelRole } from "../models/LevelRole.js";
 import { CommandFile } from "../types.js";
 import { DefaultEmbedColour } from "../helpers/embed-colour.js";
 
-const command: CommandFile =  {
+const command: CommandFile = {
     data: new SlashCommandBuilder()
         .setName("list_level_roles")
         .setDescription("Fetch the levels of each role")
@@ -37,5 +37,5 @@ const command: CommandFile =  {
         await interaction.reply({ embeds: [returnedEmbed] });
         return;
     }
-}
+};
 export default command;

@@ -35,7 +35,7 @@ else client.login(config.token);
 
 // import all the command files
 const commandCollection = new Collection<string, CommandFile>();
-const commandFiles: Array<string> = fs.readdirSync("./package/commands");
+const commandFiles: string[] = fs.readdirSync("./package/commands");
 for (const file of commandFiles) {
     import(`./commands/${file}`).then((command) => {
         commandCollection.set(command.default.data.name, command.default);
@@ -122,14 +122,17 @@ client.on("messageCreate", async (message: Message) => {
     user_id:, server_id, xp, msg, counted_msg, date, lvl, lvlxp
     */
     if (user === null) {
-        const new_user = PersonXP.newPerson(message.guild.id, message.member.id)
+        const new_user = PersonXP.newPerson(message.guild.id, message.member.id);
         new_user.messageUpdate_And_GainXp(7, 12);
         await new_user.save();
         return;
     }
 
     //log amount of ms since last msg
-    logDebug("index.js", `${message.author.id} (${message.author.username}): ${Date.now() - new Date(user.date).getTime()}. ${user.date}`);
+    logDebug(
+        "index.js",
+        `${message.author.id} (${message.author.username}): ${Date.now() - new Date(user.date).getTime()}. ${user.date}`
+    );
 
     //allow xp gain only every minute
     if (Date.now() - new Date(user.date).getTime() > 60000 || config.disable_cooldown) {

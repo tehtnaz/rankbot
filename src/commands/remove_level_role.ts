@@ -3,7 +3,7 @@ import { PermissionFlagsBits } from "discord.js";
 import { LevelRole } from "../models/LevelRole.js";
 import { CommandFile } from "../types.js";
 
-const command: CommandFile =  {
+const command: CommandFile = {
     data: new SlashCommandBuilder()
         .setName("remove_level_role")
         .setDescription("Remove a role from the list")
@@ -29,5 +29,5 @@ const command: CommandFile =  {
             });
         }
     }
-}
+};
 export default command;

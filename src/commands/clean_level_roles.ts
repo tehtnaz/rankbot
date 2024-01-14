@@ -3,7 +3,7 @@ import { PermissionFlagsBits } from "discord.js";
 import { LevelRole } from "../models/LevelRole.js";
 import { CommandFile } from "../types.js";
 
-const command: CommandFile =  {
+const command: CommandFile = {
     data: new SlashCommandBuilder()
         .setName("clean_level_roles")
         .setDescription("Cleans up any deleted roles from the role list")
@@ -26,5 +26,5 @@ const command: CommandFile =  {
         }
         await interaction.reply(`Removed ${deleted_num} role${deleted_num == 1 ? "" : "s"} from the list`);
     }
-}
+};
 export default command;
