@@ -8,7 +8,7 @@ rankbot © 2024 by Jase Beaumont is licensed under CC BY-NC-SA 4.0
 
 -   Rename `config-template.json` to `config.json`
 -   Update values in config (I think it might break if you dont fill in all values properly)
--   Install node.js (v21 LTS is what's used here, although 20 LTS should work)
+-   Install node.js (v21 is what's used here, although 20 LTS should work)
 -   Install packages - `npm install`
 -   Compile for typescript - `npx tsc`
 -   Create new database - `node ./package/dbInit.js --force`
