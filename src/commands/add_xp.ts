@@ -1,11 +1,11 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { ChatInputCommandInteraction, PermissionFlagsBits } from "discord.js";
+import { PermissionFlagsBits } from "discord.js";
 import { sb_LogError } from "../helpers/logging-helpers.js";
 import { getClosestRoleID } from "../models/LevelRole.js";
 import { PersonXP } from "../models/PersonXP.js";
 import { CommandFile } from "../types.js";
 
-export default {
+const command: CommandFile = {
     data: new SlashCommandBuilder()
         .setName("add_xp")
         .setDescription("Add xp to someone")
@@ -13,7 +13,7 @@ export default {
         .addUserOption((option) => option.setName("user").setDescription("The user to add the XP to").setRequired(true))
         .setDMPermission(false)
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-    async chatInputCommand(interaction: ChatInputCommandInteraction) {
+    async chatInputCommand(interaction) {
         const xp = interaction.options.getInteger("xp", true);
         const user = interaction.options.getUser("user", true);
 
@@ -22,15 +22,7 @@ export default {
             where: { server_id: interaction.guildId, user_id: user.id }
         });
         if (person === null) {
-            const new_person = await PersonXP.create({
-                user_id: user.id,
-                server_id: interaction.guildId,
-                xp: 0,
-                counted_msg: 0,
-                date: Date.now(),
-                lvl: 0,
-                lvlxp: 0
-            });
+            const new_person = PersonXP.newPerson(interaction.guildId, user.id);
             new_person.addXP(xp);
             await new_person.save();
 
@@ -62,4 +54,5 @@ export default {
         }
         await interaction.reply(`Successfully added ${xp} xp to ${user.username}`);
     }
-} as CommandFile;
+};
+export default command;

@@ -1,18 +1,18 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { ChatInputCommandInteraction, EmbedBuilder } from "discord.js";
+import { EmbedBuilder } from "discord.js";
 import { DefaultEmbedColour } from "../helpers/embed-colour.js";
 import { sb_LogError, sb_LogInfo } from "../helpers/logging-helpers.js";
 import { getLeaderboardEmoji } from "../helpers/leaderboard-emoji.js";
 import { PersonXP } from "../models/PersonXP.js";
 import { CommandFile } from "../types.js";
 
-export default {
+const command: CommandFile = {
     data: new SlashCommandBuilder()
         .setName("rank")
         .setDescription("Fetch your own rank")
         .setDMPermission(false)
         .addUserOption((option) => option.setName("user").setDescription("The user's rank to get").setRequired(false)),
-    async chatInputCommand(interaction: ChatInputCommandInteraction) {
+    async chatInputCommand(interaction) {
         if (!interaction.inGuild() || interaction.guild === null) return;
         try {
             const userList = await PersonXP.findAll({
@@ -81,4 +81,5 @@ export default {
             );
         }
     }
-} as CommandFile;
+};
+export default command;

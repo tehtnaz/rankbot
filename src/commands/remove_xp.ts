@@ -1,11 +1,11 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { ChatInputCommandInteraction, PermissionFlagsBits } from "discord.js";
+import { PermissionFlagsBits } from "discord.js";
 import { sb_LogError } from "../helpers/logging-helpers.js";
 import { getClosestRoleID } from "../models/LevelRole.js";
 import { PersonXP } from "../models/PersonXP.js";
 import { CommandFile } from "../types.js";
 
-export default {
+const command: CommandFile = {
     data: new SlashCommandBuilder()
         .setName("remove_xp")
         .setDescription("Remove xp from someone")
@@ -17,7 +17,7 @@ export default {
         )
         .setDMPermission(false)
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-    async chatInputCommand(interaction: ChatInputCommandInteraction) {
+    async chatInputCommand(interaction) {
         const xp = interaction.options.getInteger("xp", true);
         const user = interaction.options.getUser("user", true);
 
@@ -48,4 +48,5 @@ export default {
         }
         await interaction.reply(`Successfully removed ${xp} xp from ${user.username}`);
     }
-} as CommandFile;
+};
+export default command;

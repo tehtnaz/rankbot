@@ -7,7 +7,7 @@ import { logDebug, logError, logWarn } from "./logging-helpers.js";
 export function sendHeartbeat() {
     logDebug("heartbeat.js", "Sending heartbeat");
     axios
-        .get(config.releaseMode === "release" ? config.status_heartbeat_link : config.test_heartbeat_link)
+        .get(config.debug === false ? config.status_heartbeat_link : config.test_heartbeat_link)
         .then((info) => {
             if (info.status >= 400) {
                 logWarn("heartbeat.js", "Received error on status update");

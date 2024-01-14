@@ -1,9 +1,9 @@
 import { SlashCommandBuilder, SlashCommandIntegerOption, SlashCommandRoleOption } from "@discordjs/builders";
-import { ChatInputCommandInteraction, PermissionFlagsBits } from "discord.js";
+import { PermissionFlagsBits } from "discord.js";
 import { LevelRole } from "../models/LevelRole.js";
 import { CommandFile } from "../types.js";
 
-export default {
+const command: CommandFile = {
     data: new SlashCommandBuilder()
         .setName("set_level_role")
         .setDescription("Set the role for each level")
@@ -15,7 +15,7 @@ export default {
         )
         .setDMPermission(false)
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-    async chatInputCommand(interaction: ChatInputCommandInteraction) {
+    async chatInputCommand(interaction) {
         const level = interaction.options.getInteger("level", true);
         const role = interaction.options.getRole("role", true);
 
@@ -29,4 +29,5 @@ export default {
 
         await interaction.reply(`Set ${role.name} to level ${level}`);
     }
-} as CommandFile;
+};
+export default command;

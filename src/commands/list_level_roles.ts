@@ -1,16 +1,16 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { ChatInputCommandInteraction, EmbedBuilder } from "discord.js";
+import { EmbedBuilder } from "discord.js";
 import { getRandomEmptyMessage } from "../helpers/responses.js";
 import { LevelRole } from "../models/LevelRole.js";
 import { CommandFile } from "../types.js";
 import { DefaultEmbedColour } from "../helpers/embed-colour.js";
 
-export default {
+const command: CommandFile = {
     data: new SlashCommandBuilder()
         .setName("list_level_roles")
         .setDescription("Fetch the levels of each role")
         .setDMPermission(false),
-    async chatInputCommand(interaction: ChatInputCommandInteraction) {
+    async chatInputCommand(interaction) {
         if (interaction.guild === null || interaction.guildId === null) return;
 
         const roleList = await LevelRole.findAll({
@@ -37,4 +37,5 @@ export default {
         await interaction.reply({ embeds: [returnedEmbed] });
         return;
     }
-} as CommandFile;
+};
+export default command;

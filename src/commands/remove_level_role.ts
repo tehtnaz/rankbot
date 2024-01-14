@@ -1,9 +1,9 @@
 import { SlashCommandBuilder, SlashCommandRoleOption } from "@discordjs/builders";
-import { ChatInputCommandInteraction, PermissionFlagsBits } from "discord.js";
+import { PermissionFlagsBits } from "discord.js";
 import { LevelRole } from "../models/LevelRole.js";
 import { CommandFile } from "../types.js";
 
-export default {
+const command: CommandFile = {
     data: new SlashCommandBuilder()
         .setName("remove_level_role")
         .setDescription("Remove a role from the list")
@@ -12,7 +12,7 @@ export default {
         )
         .setDMPermission(false)
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-    async chatInputCommand(interaction: ChatInputCommandInteraction) {
+    async chatInputCommand(interaction) {
         if (interaction.guildId === null) return;
 
         const role = interaction.options.getRole("role", true);
@@ -29,4 +29,5 @@ export default {
             });
         }
     }
-} as CommandFile;
+};
+export default command;
