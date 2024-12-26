@@ -20,7 +20,7 @@ export class PersonXP extends Model<InferAttributes<PersonXP>, InferCreationAttr
     @AllowNull(false)
     @Default(0)
     @Column(DataType.INTEGER)
-    declare counted_msg: number;
+    declare counted_msg: number; // Number of counted messages. The message you send after 1 minute since your last message is counted
 
     @AllowNull(false)
     @Default(DataType.NOW)
