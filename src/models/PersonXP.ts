@@ -94,7 +94,7 @@ export class PersonXP extends Model<InferAttributes<PersonXP>, InferCreationAttr
         this.lvlxp = this.xp;
         this.xp -= remove_xp;
         this.lvlxp -= remove_xp;
-
+        if (this.xp < 0) this.xp = 0;
         if (this.lvlxp < 0) this.lvlxp = 0;
 
         this.lvl = 0;
