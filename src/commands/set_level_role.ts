@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, SlashCommandIntegerOption, SlashCommandRoleOption } from "@discordjs/builders";
-import { PermissionFlagsBits } from "discord.js";
+import { InteractionContextType, PermissionFlagsBits } from "discord.js";
 import { LevelRole } from "../models/LevelRole.js";
 import { CommandFile } from "../types.js";
 
@@ -13,7 +13,7 @@ const command: CommandFile = {
         .addRoleOption((option: SlashCommandRoleOption) =>
             option.setName("role").setDescription("The role to assign the level to").setRequired(true)
         )
-        .setDMPermission(false)
+        .setContexts(InteractionContextType.Guild)
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
     async chatInputCommand(interaction) {
         const level = interaction.options.getInteger("level", true);

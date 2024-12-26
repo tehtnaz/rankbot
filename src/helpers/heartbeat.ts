@@ -1,5 +1,4 @@
 import axios from "axios";
-// import config from "../config.js";
 import fs from "fs";
 const config = JSON.parse(fs.readFileSync("config.json", "utf-8"));
 import { logDebug, logError, logWarn } from "./logging-helpers.js";
@@ -21,3 +20,5 @@ export function sendHeartbeat() {
 }
 
 setInterval(sendHeartbeat, 300_000);
+
+// Note: This heartbeat is desynced from soundbot. Non-necessary change

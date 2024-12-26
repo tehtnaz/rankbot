@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { PermissionFlagsBits } from "discord.js";
+import { InteractionContextType, PermissionFlagsBits } from "discord.js";
 import { LevelRole } from "../models/LevelRole.js";
 import { CommandFile } from "../types.js";
 
@@ -7,7 +7,7 @@ const command: CommandFile = {
     data: new SlashCommandBuilder()
         .setName("clean_level_roles")
         .setDescription("Cleans up any deleted roles from the role list")
-        .setDMPermission(false)
+        .setContexts(InteractionContextType.Guild)
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
     async chatInputCommand(interaction) {
         if (interaction.guild === null || interaction.guildId === null) return;

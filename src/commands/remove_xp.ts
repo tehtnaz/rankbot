@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { PermissionFlagsBits } from "discord.js";
+import { InteractionContextType, PermissionFlagsBits } from "discord.js";
 import { sb_LogError } from "../helpers/logging-helpers.js";
 import { getClosestRoleID } from "../models/LevelRole.js";
 import { PersonXP } from "../models/PersonXP.js";
@@ -15,7 +15,7 @@ const command: CommandFile = {
         .addUserOption((option) =>
             option.setName("user").setDescription("The user to remove the XP from").setRequired(true)
         )
-        .setDMPermission(false)
+        .setContexts(InteractionContextType.Guild)
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
     async chatInputCommand(interaction) {
         const xp = interaction.options.getInteger("xp", true);

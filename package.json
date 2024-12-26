@@ -1,12 +1,13 @@
 {
     "name": "rankbot",
-    "version": "0.4.0",
+    "version": "0.4.1",
     "description": "gets discord stats",
     "main": "package/index.js",
     "scripts": {
         "deploy": "npx tsc && node ./package/deploy-commands.js",
         "lint": "npx eslint .",
         "prettier": "npx prettier -w .",
+        "prettier-logs": "./prettier-logs.bash",
         "start": "npx tsc && node .",
         "mee6ripper": "node ./package/mee6ripper.js"
     },
@@ -29,13 +30,13 @@
         "zlib-sync": "^0.1.9"
     },
     "devDependencies": {
+        "@eslint/js": "^9.17.0",
+        "@types/eslint__js": "^8.42.3",
         "@types/readline-sync": "^1.4.8",
-        "@typescript-eslint/eslint-plugin": "^6.15.0",
-        "@typescript-eslint/parser": "^6.15.0",
-        "eslint": "^8.16.0",
+        "eslint": "^9.17.0",
         "eslint-config-prettier": "^9.1.0",
-        "eslint-plugin-deprecation": "^2.0.0",
-        "prettier": "^3.4.2"
+        "prettier": "^3.4.2",
+        "typescript-eslint": "^8.18.2"
     },
     "engines": {
         "node": ">=22.11.0"

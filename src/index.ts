@@ -81,8 +81,10 @@ client.once("ready", async () => {
             "index.js",
             `Started RankBot ${rb_version}${chalk.redBright("-DEV")} in ${chalk.bgYellowBright("DEBUG MODE")}`
         );
+        console.log(`Started RankBot ${rb_version}${chalk.redBright("-DEV")} in ${chalk.bgYellowBright("DEBUG MODE")}`);
     } else {
         logInfo("index.js", `Started RankBot ${rb_version} in ${chalk.bgBlueBright("OFFICIAL mode")}`);
+        console.log(`Started RankBot ${rb_version} in ${chalk.bgBlueBright("OFFICIAL mode")}`);
         const d = new Date();
         const printStr = `-------------------------\n    @@@@ Bot went online at: ${d.toDateString()}, ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}\n`;
         fs.appendFile("./activity.txt", printStr, (err) => {
@@ -215,6 +217,17 @@ client.on("guildMemberAdd", async (member) => {
     } else {
         logError("index.js", "Error adding role: Does the role exist? Are the permissions out of scope? Skipping...");
     }
+});
+
+client.on("error", (error) => {
+    logError("index.js", "Uncaught exception.");
+    logError("index.js", error);
+    if (config.releaseMode === "release") {
+        const d = new Date();
+        const printStr = `    ???? Bot had an error at: ${d.toDateString()}, ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}\n`;
+        fs.appendFileSync("./activity.txt", printStr);
+    }
+    //sendErrorWebhook(":exclamation: Client exception", error);
 });
 
 process.on("uncaughtException", (error, source) => {

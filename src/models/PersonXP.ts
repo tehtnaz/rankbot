@@ -35,7 +35,7 @@ export class PersonXP extends Model<InferAttributes<PersonXP>, InferCreationAttr
     @AllowNull(false)
     @Default(0)
     @Column(DataType.INTEGER)
-    declare lvlxp: number;
+    declare lvlxp: number; // xp gained during current level
 
     public static newPerson(
         guildId: string,
@@ -98,7 +98,7 @@ export class PersonXP extends Model<InferAttributes<PersonXP>, InferCreationAttr
         if (this.lvlxp < 0) this.lvlxp = 0;
 
         this.lvl = 0;
-        while (this.checkLevelUp(false)) {
+        for (let i = 0; this.checkLevelUp(false) && i < 10000; i++) {
             /**/
         }
     }
