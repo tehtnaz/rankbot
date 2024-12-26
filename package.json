@@ -26,6 +26,7 @@
         "sequelize": "^6.37.5",
         "sequelize-typescript": "^2.1.6",
         "sqlite3": "^5.1.7",
+        "typescript": "^5.7.2",
         "utf-8-validate": "^6.0.5",
         "zlib-sync": "^0.1.9"
     },

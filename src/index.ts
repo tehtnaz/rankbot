@@ -68,7 +68,7 @@ function SetMemUserXp(personXp: PersonXP){
     console.log(personXp.server_id);
 }*/
 
-export const rb_version = "v0.4.0";
+export const rb_version = "v0.5.0";
 
 client.once("ready", async () => {
     const guild_list: string[] = [];
