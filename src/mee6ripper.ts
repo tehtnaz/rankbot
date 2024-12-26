@@ -123,7 +123,7 @@ async function ParseLevelsIntoDatabase(serverId: string, maxPageNum: number) {
     for (const personLevel of levels) {
         const personXp = PersonXP.newPerson(serverId, personLevel.id, {
             counted_msg: personLevel.message_count,
-            date: new Date(0).toISOString()
+            date: new Date(0)
         });
         personXp.addXP(personLevel.xp, true);
         if (dontOutput === false) process.stdout.write("\rCreated new PersonXP for " + personLevel.id);
@@ -193,8 +193,9 @@ async function TransferAllDataIntoDatabase() {
                 user_id: personXp.user_id,
                 server_id: personXp.server_id,
                 counted_msg: personXp.counted_msg,
+                msg: personXp.msg,
                 xp: personXp.xp,
-                date: new Date(0).toISOString(),
+                date: new Date(0),
                 lvl: personXp.lvl,
                 lvlxp: personXp.lvlxp
             })

@@ -10,12 +10,6 @@ import { logDebug, logError, logInfo, sqlLogger } from "./helpers/logging-helper
 import { CommandFile } from "./types.js";
 import { sendHeartbeat } from "./helpers/heartbeat.js";
 
-// const sequelize = new Sequelize("database", "username", "password", {
-//     host: "localhost",
-//     dialect: "sqlite",
-//     logging: false,
-//     storage: "database.sqlite"
-// });
 new Sequelize({
     dialect: "sqlite",
     storage: "database.sqlite",
@@ -42,31 +36,6 @@ for (const file of commandFiles) {
         logInfo("index.js", `registered: ${command.default.data.name}`);
     });
 }
-/*const ServerXpCollection = new Collection<string, Collection<string, PersonXP>>();
-//  ServerXpCollection = (server_id, XpUntilLevelUp)
-//  XpUntilLevelUp = 
-
-async function SaveXpData(){
-    console.log("Saving data...");
-    ServerXpCollection.forEach((ServerXp, server_id) =>{
-        ServerXp.forEach((personXp, user_id) =>{
-            PersonXP.update(personXp, {where: {server_id: server_id, user_id: user_id}});
-            console.log(server_id + " : " + user_id);
-        })
-    })
-}
-
-function SetMemUserXp(personXp: PersonXP){
-    const ServerXp = ServerXpCollection.get(personXp.server_id);
-    if(ServerXp === undefined){
-        const newCollection = new Collection<string, PersonXP>();
-        newCollection.set(personXp.user_id, personXp);
-        ServerXpCollection.set(personXp.server_id, newCollection);
-    }else{
-        ServerXp.set(personXp.user_id, personXp)
-    }
-    console.log(personXp.server_id);
-}*/
 
 export const rb_version = "v0.5.0";
 
@@ -103,26 +72,10 @@ client.on("messageCreate", async (message: Message) => {
     if (message.author.bot === true) return;
     if (!message.inGuild() || message.member === null) return;
 
-    // Get user
-    // Cached collection
-    //     const user = ServerXpCollection?.get(message.guildId)?.get(message.author.id);
-    // Directly from database
+    // Get user directly from database
     const user = await PersonXP.findOne({
         where: { server_id: message.guildId, user_id: message.author.id }
     });
-
-    //instead of returning make new row for new user ***TODO***
-    /*if (user === undefined) {
-        const server = ServerXpCollection.get(message.guildId);
-        if(server === undefined){
-            ServerXpCollection.set(message.guildId, new Collection());
-            ServerXpCollection.get(message.guildId)?.set(message.author.id,
-        }
-        return;
-    }*/
-    /*
-    user_id:, server_id, xp, msg, counted_msg, date, lvl, lvlxp
-    */
     if (user === null) {
         const new_user = PersonXP.newPerson(message.guild.id, message.member.id);
         new_user.messageUpdate_And_GainXp(7, 12);
@@ -135,6 +88,8 @@ client.on("messageCreate", async (message: Message) => {
         "index.js",
         `${message.author.id} (${message.author.username}): ${Date.now() - new Date(user.date).getTime()}. ${user.date}`
     );
+
+    user.msg += 1;
 
     //allow xp gain only every minute
     if (Date.now() - new Date(user.date).getTime() > 60000 || config.disable_cooldown) {
