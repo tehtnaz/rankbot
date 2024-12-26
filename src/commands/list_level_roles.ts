@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { EmbedBuilder } from "discord.js";
+import { EmbedBuilder, InteractionContextType } from "discord.js";
 import { getRandomEmptyMessage } from "../helpers/responses.js";
 import { LevelRole } from "../models/LevelRole.js";
 import { CommandFile } from "../types.js";
@@ -9,7 +9,7 @@ const command: CommandFile = {
     data: new SlashCommandBuilder()
         .setName("list_level_roles")
         .setDescription("Fetch the levels of each role")
-        .setDMPermission(false),
+        .setContexts(InteractionContextType.Guild),
     async chatInputCommand(interaction) {
         if (interaction.guild === null || interaction.guildId === null) return;
 

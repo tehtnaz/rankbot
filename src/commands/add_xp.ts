@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { PermissionFlagsBits } from "discord.js";
+import { InteractionContextType, PermissionFlagsBits } from "discord.js";
 import { sb_LogError } from "../helpers/logging-helpers.js";
 import { getClosestRoleID } from "../models/LevelRole.js";
 import { PersonXP } from "../models/PersonXP.js";
@@ -11,7 +11,7 @@ const command: CommandFile = {
         .setDescription("Add xp to someone")
         .addIntegerOption((option) => option.setName("xp").setDescription("The number of XP to add").setRequired(true))
         .addUserOption((option) => option.setName("user").setDescription("The user to add the XP to").setRequired(true))
-        .setDMPermission(false)
+        .setContexts(InteractionContextType.Guild)
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
     async chatInputCommand(interaction) {
         const xp = interaction.options.getInteger("xp", true);

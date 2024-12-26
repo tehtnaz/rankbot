@@ -1,12 +1,12 @@
 import {
     ButtonInteraction,
     ChatInputCommandInteraction,
-    SlashCommandBuilder,
+    SlashCommandOptionsOnlyBuilder,
     StringSelectMenuInteraction
 } from "discord.js";
 
 interface CommandFileData {
-    data: Omit<SlashCommandBuilder, "addSubcommand" | "addSubcommandGroup">;
+    data: SlashCommandOptionsOnlyBuilder;
     chatInputCommand: (interaction: ChatInputCommandInteraction) => Promise<void>;
 }
 interface ExtraCommandFileData extends Required<CommandFileData> {

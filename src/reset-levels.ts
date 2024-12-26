@@ -1,5 +1,7 @@
 import { PersonXP } from "./models/PersonXP.js";
 import { Sequelize } from "sequelize-typescript";
+
+// ! C'mon, don't use this negligently sysadmins
 new Sequelize({
     dialect: "sqlite",
     storage: "database.sqlite",

@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { EmbedBuilder } from "discord.js";
+import { EmbedBuilder, InteractionContextType } from "discord.js";
 import { DefaultEmbedColour } from "../helpers/embed-colour.js";
 import { sb_LogError, sb_LogInfo } from "../helpers/logging-helpers.js";
 import { getLeaderboardEmoji } from "../helpers/leaderboard-emoji.js";
@@ -10,7 +10,7 @@ const command: CommandFile = {
     data: new SlashCommandBuilder()
         .setName("rank")
         .setDescription("Fetch your own rank")
-        .setDMPermission(false)
+        .setContexts(InteractionContextType.Guild)
         .addUserOption((option) => option.setName("user").setDescription("The user's rank to get").setRequired(false)),
     async chatInputCommand(interaction) {
         if (!interaction.inGuild() || interaction.guild === null) return;
@@ -47,7 +47,7 @@ const command: CommandFile = {
                         )
                         .addFields(
                             { name: "XP", value: item.xp.toString(), inline: true },
-                            { name: "Messages", value: item.counted_msg.toString(), inline: true }
+                            { name: "Counted messages", value: item.counted_msg.toString(), inline: true }
                         )
                         .addFields([
                             {

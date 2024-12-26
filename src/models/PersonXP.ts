@@ -20,7 +20,7 @@ export class PersonXP extends Model<InferAttributes<PersonXP>, InferCreationAttr
     @AllowNull(false)
     @Default(0)
     @Column(DataType.INTEGER)
-    declare counted_msg: number;
+    declare counted_msg: number; // Number of counted messages. The message you send after 1 minute since your last message is counted
 
     @AllowNull(false)
     @Default(DataType.NOW)
@@ -35,7 +35,7 @@ export class PersonXP extends Model<InferAttributes<PersonXP>, InferCreationAttr
     @AllowNull(false)
     @Default(0)
     @Column(DataType.INTEGER)
-    declare lvlxp: number;
+    declare lvlxp: number; // xp gained during current level
 
     public static newPerson(
         guildId: string,
@@ -94,11 +94,11 @@ export class PersonXP extends Model<InferAttributes<PersonXP>, InferCreationAttr
         this.lvlxp = this.xp;
         this.xp -= remove_xp;
         this.lvlxp -= remove_xp;
-
+        if (this.xp < 0) this.xp = 0;
         if (this.lvlxp < 0) this.lvlxp = 0;
 
         this.lvl = 0;
-        while (this.checkLevelUp(false)) {
+        for (let i = 0; this.checkLevelUp(false) && i < 10000; i++) {
             /**/
         }
     }

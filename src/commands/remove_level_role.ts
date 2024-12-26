@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, SlashCommandRoleOption } from "@discordjs/builders";
-import { PermissionFlagsBits } from "discord.js";
+import { InteractionContextType, PermissionFlagsBits } from "discord.js";
 import { LevelRole } from "../models/LevelRole.js";
 import { CommandFile } from "../types.js";
 
@@ -10,7 +10,7 @@ const command: CommandFile = {
         .addRoleOption((option: SlashCommandRoleOption) =>
             option.setName("role").setDescription("The role to remove").setRequired(true)
         )
-        .setDMPermission(false)
+        .setContexts(InteractionContextType.Guild)
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
     async chatInputCommand(interaction) {
         if (interaction.guildId === null) return;

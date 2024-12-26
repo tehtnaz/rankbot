@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { EmbedBuilder } from "discord.js";
+import { EmbedBuilder, InteractionContextType } from "discord.js";
 import { DefaultEmbedColour } from "../helpers/embed-colour.js";
 import { sb_LogError } from "../helpers/logging-helpers.js";
 import { getLeaderboardEmoji } from "../helpers/leaderboard-emoji.js";
@@ -10,7 +10,7 @@ const command: CommandFile = {
     data: new SlashCommandBuilder()
         .setName("leaderboard")
         .setDescription("Fetch the leaderboard")
-        .setDMPermission(false),
+        .setContexts(InteractionContextType.Guild),
     async chatInputCommand(interaction) {
         if (interaction.guild === null || interaction.guildId === null) return;
         try {
