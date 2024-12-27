@@ -2,7 +2,7 @@ import { InferAttributes, InferCreationAttributes } from "sequelize";
 import { Model, DataType, Table, Column, AllowNull, Default } from "sequelize-typescript";
 import { logInfo } from "../helpers/logging-helpers.js";
 
-@Table({ freezeTableName: false, paranoid: false, timestamps: false })
+@Table({ freezeTableName: true, paranoid: false, timestamps: false })
 export class PersonXP extends Model<InferAttributes<PersonXP>, InferCreationAttributes<PersonXP>> {
     @AllowNull(false)
     @Column(DataType.STRING(64))
@@ -23,9 +23,14 @@ export class PersonXP extends Model<InferAttributes<PersonXP>, InferCreationAttr
     declare counted_msg: number; // Number of counted messages. The message you send after 1 minute since your last message is counted
 
     @AllowNull(false)
+    @Default(0)
+    @Column(DataType.INTEGER)
+    declare msg: number; // Number of counted messages. The message you send after 1 minute since your last message is counted
+
+    @AllowNull(false)
     @Default(DataType.NOW)
     @Column(DataType.DATE)
-    declare date: string; // UNIX timestamp of last sent msg
+    declare date: Date; // UNIX timestamp of last sent msg
 
     @AllowNull(false)
     @Default(0)
@@ -40,14 +45,15 @@ export class PersonXP extends Model<InferAttributes<PersonXP>, InferCreationAttr
     public static newPerson(
         guildId: string,
         userId: string,
-        otherInfo?: { xp?: number; counted_msg?: number; date?: string; lvl?: number; lvlxp?: number }
+        otherInfo?: { xp?: number; counted_msg?: number; msg?: number; date?: Date; lvl?: number; lvlxp?: number }
     ) {
         return PersonXP.build({
             server_id: guildId,
             user_id: userId,
             xp: otherInfo?.xp ?? 0,
             counted_msg: otherInfo?.counted_msg ?? 0,
-            date: otherInfo?.date ?? new Date().toISOString(),
+            msg: otherInfo?.msg ?? 0,
+            date: otherInfo?.date ?? new Date(),
             lvl: otherInfo?.lvl ?? 0,
             lvlxp: otherInfo?.lvlxp ?? 0
         });
@@ -58,7 +64,7 @@ export class PersonXP extends Model<InferAttributes<PersonXP>, InferCreationAttr
         this.xp += xpGain;
         this.lvlxp += xpGain;
         this.counted_msg++;
-        this.date = new Date().toISOString();
+        this.date = new Date();
     }
     public checkLevelUp(logOutput: boolean): boolean {
         const calc = 5 * this.lvl * this.lvl + 50 * this.lvl + 100;

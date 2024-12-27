@@ -43,19 +43,15 @@ const command: CommandFile = {
                                 value: getLeaderboardEmoji(userList.indexOf(item)),
                                 inline: true
                             },
-                            { name: "Level", value: item.lvl.toString(), inline: true }
-                        )
-                        .addFields(
+                            { name: "Level", value: item.lvl.toString(), inline: true },
                             { name: "XP", value: item.xp.toString(), inline: true },
-                            { name: "Counted messages", value: item.counted_msg.toString(), inline: true }
-                        )
-                        .addFields([
+                            { name: "Messages (Counted | Total)", value: `${item.counted_msg} | ${item.msg}`, inline: true },
                             {
                                 name: "XP until Next Level",
                                 value: item.xpUntilLevelUp().toString(),
                                 inline: true
                             }
-                        ]);
+                        );
                     userIncluded = true;
                     break;
                 }

@@ -44,7 +44,7 @@ const command: CommandFile = {
                         returnedEmbed.addFields([
                             {
                                 name: `${getLeaderboardEmoji(i)} ${user.user.username} (${item.lvl.toString()})`,
-                                value: `XP: ${item.xp.toString()} | Messages: ${item.counted_msg.toString()}`
+                                value: `XP: ${item.xp.toString()} | Messages: ${item.msg.toString()}`
                             }
                         ]);
                     })
