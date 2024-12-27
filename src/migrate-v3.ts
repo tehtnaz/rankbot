@@ -30,7 +30,7 @@ await LevelRole.findAll().then((oldRoles) => {
 await PersonXP.findAll().then((oldXPs) => {
     // i know theres bulkCreate... this is easier lol
     oldXPs.forEach((oldXP) =>{
-        New_PersonXP.create({user_id: oldXP.user_id, server_id: oldXP.server_id, xp: oldXP.xp, counted_msg: oldXP.counted_msg, msg: oldXP.counted_msg, date: new Date(oldXP.date), lvl: oldXP.lvl, lvlxp: oldXP.lvlxp})
+        New_PersonXP.create({user_id: oldXP.user_id, server_id: oldXP.server_id, xp: oldXP.xp, counted_msg: oldXP.msg, msg: oldXP.counted_msg, date: new Date(oldXP.date), lvl: oldXP.lvl, lvlxp: oldXP.lvlxp})
     })
 });
 
