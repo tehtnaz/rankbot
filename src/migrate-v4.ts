@@ -17,20 +17,31 @@ new Sequelize({
     storage: "database.sqlite",
     logging: console.log,
     models: [Old_PersonXP, Old_LevelRole]
-})
+});
 
 await Old_LevelRole.findAll().then((oldRoles) => {
     // i know theres bulkCreate... this is easier lol
-    oldRoles.forEach((oldRole) =>{
-        LevelRole.create({server_id: oldRole.server_id, role_id: oldRole.server_id, level: oldRole.level})
-    })
+    oldRoles.forEach((oldRole) => {
+        LevelRole.create({ server_id: oldRole.server_id, role_id: oldRole.server_id, level: oldRole.level });
+    });
 });
 await Old_PersonXP.findAll().then((oldXPs) => {
     // i know theres bulkCreate... this is easier lol
-    oldXPs.forEach((oldXP) =>{
-        PersonXP.create({user_id: oldXP.user_id, server_id: oldXP.server_id, xp: oldXP.xp, counted_msg: oldXP.counted_msg, msg: oldXP.counted_msg, date: new Date(oldXP.date), lvl: oldXP.lvl, lvlxp: oldXP.lvlxp})
-    })
+    oldXPs.forEach((oldXP) => {
+        PersonXP.create({
+            user_id: oldXP.user_id,
+            server_id: oldXP.server_id,
+            xp: oldXP.xp,
+            counted_msg: oldXP.counted_msg,
+            msg: oldXP.counted_msg,
+            date: new Date(oldXP.date),
+            lvl: oldXP.lvl,
+            lvlxp: oldXP.lvlxp
+        });
+    });
 });
 
-console.log(`Counts: Old_LevelRole: ${await Old_LevelRole.count()}, Old_PersonXP: ${await PersonXP.count()}, LevelRole: ${await LevelRole.count()}, PersonXP: ${await PersonXP.count()}`)
-console.log("Reached EOF")
+console.log(
+    `Counts: Old_LevelRole: ${await Old_LevelRole.count()}, Old_PersonXP: ${await PersonXP.count()}, LevelRole: ${await LevelRole.count()}, PersonXP: ${await PersonXP.count()}`
+);
+console.log("Reached EOF");

@@ -18,45 +18,57 @@ const command: CommandFile = {
             const userList = await PersonXP.findAll({
                 where: { server_id: interaction.guildId }
             });
-            userList.sort(function (a: PersonXP, b: PersonXP) {
-                return b.xp - a.xp;
+            const membersList = await interaction.guild.members.fetch({
+                user: userList.map((val) => {
+                    return val.user_id;
+                })
             });
-            let userIncluded = false;
+            const sortedList = userList
+                .filter((val) => {
+                    membersList.has(val.user_id);
+                })
+                .sort(function (a: PersonXP, b: PersonXP) {
+                    return b.xp - a.xp;
+                });
 
             const user = interaction.options.getUser("user");
             const requested_user = user !== null ? user : interaction.user;
 
             const returnedEmbed = new EmbedBuilder().setColor(DefaultEmbedColour);
 
-            for (const item of userList) {
-                if (item.user_id === requested_user.id) {
-                    sb_LogInfo(interaction, "u: " + userList.indexOf(item));
-                    sb_LogInfo(interaction, "user lvlxp: " + item.lvlxp);
-                    returnedEmbed
-                        .setAuthor({
-                            name: requested_user.username + "'s rank",
-                            iconURL: `https://cdn.discordapp.com/avatars/${requested_user.id}/${requested_user.avatar}.png`
-                        })
-                        .addFields(
-                            {
-                                name: "Rank",
-                                value: getLeaderboardEmoji(userList.indexOf(item)),
-                                inline: true
-                            },
-                            { name: "Level", value: item.lvl.toString(), inline: true },
-                            { name: "XP", value: item.xp.toString(), inline: true },
-                            { name: "Messages (Counted | Total)", value: `${item.counted_msg} | ${item.msg}`, inline: true },
-                            {
-                                name: "XP until Next Level",
-                                value: item.xpUntilLevelUp().toString(),
-                                inline: true
-                            }
-                        );
-                    userIncluded = true;
-                    break;
-                }
-            }
-            if (userIncluded === false) {
+            const itemIndex = sortedList.findIndex((val) => {
+                return val.user_id === requested_user.id;
+            });
+            if (itemIndex !== -1) {
+                const item = sortedList[itemIndex];
+                sb_LogInfo(interaction, "u: " + itemIndex);
+                sb_LogInfo(interaction, "user lvlxp: " + item.lvlxp);
+                returnedEmbed
+                    .setAuthor({
+                        name: requested_user.username + "'s rank",
+                        iconURL: `https://cdn.discordapp.com/avatars/${requested_user.id}/${requested_user.avatar}.png`
+                    })
+                    .addFields(
+                        {
+                            name: "Rank",
+                            value: getLeaderboardEmoji(itemIndex),
+                            inline: true
+                        },
+                        { name: "Level", value: item.lvl.toString(), inline: true },
+                        { name: "XP", value: item.xp.toString(), inline: true },
+                        {
+                            name: "Messages (Counted | Total)",
+                            value: `${item.counted_msg} | ${item.msg}`,
+                            inline: true
+                        },
+                        {
+                            name: "XP until Next Level",
+                            value: item.xpUntilLevelUp().toString(),
+                            inline: true
+                        }
+                    );
+                await interaction.reply({ embeds: [returnedEmbed] });
+            } else {
                 if (user === null)
                     await interaction.reply({
                         content: ":bangbang: You haven't sent any messages in this server yet!",
@@ -67,8 +79,6 @@ const command: CommandFile = {
                         content: ":bangbang: That user hasn't sent any messages in this server yet!",
                         ephemeral: true
                     });
-            } else {
-                await interaction.reply({ embeds: [returnedEmbed] });
             }
         } catch (err) {
             sb_LogError(interaction, err);
