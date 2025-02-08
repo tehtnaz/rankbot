@@ -4,7 +4,9 @@ A basic leveling bot for Discord created by @tehtnaz
 
 This project is free for anyone to use. No warranty assured. Maintenance updates could occur, and if they do, they will be very irregular and rare
 
-rankbot (BrokenBot2) © 2024 Jase Beaumont is licensed under GPLv3
+rankbot (BrokenBot2) © 2025 Jase Beaumont is licensed under GPLv3
+
+Server: https://discord.gg/XQrtPXwzHk
 
 ## How to host it for yourself
 
