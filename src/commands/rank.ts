@@ -32,7 +32,7 @@ const command: CommandFile = {
                 });
 
             const user = interaction.options.getUser("user");
-            const requested_user = user !== null ? user : interaction.user;
+            const requested_user = user ?? interaction.user;
 
             const returnedEmbed = new EmbedBuilder().setColor(DefaultEmbedColour);
 
