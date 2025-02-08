@@ -25,7 +25,7 @@ const command: CommandFile = {
             });
             const sortedList = userList
                 .filter((val) => {
-                    membersList.has(val.user_id);
+                    return membersList.has(val.user_id);
                 })
                 .sort(function (a: PersonXP, b: PersonXP) {
                     return b.xp - a.xp;
