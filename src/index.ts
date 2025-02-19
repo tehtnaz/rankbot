@@ -37,7 +37,7 @@ for (const file of commandFiles) {
     });
 }
 
-export const rb_version = "v0.5.0";
+export const rb_version = "v0.5.2";
 
 client.once("ready", async () => {
     const guild_list: string[] = [];
@@ -168,6 +168,7 @@ client.on("guildMemberAdd", async (member) => {
             logInfo("index.js", `Successfully gave ${member.user.username} the server's joinRole`);
         } catch (err) {
             logError("index.js", err);
+            logError("index.js", `Giving joinRole to ${member.user.username} has failed`);
         }
     } else {
         logError("index.js", "Error adding role: Does the role exist? Are the permissions out of scope? Skipping...");
