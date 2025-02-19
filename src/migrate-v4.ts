@@ -22,7 +22,7 @@ new Sequelize({
 await Old_LevelRole.findAll().then((oldRoles) => {
     // i know theres bulkCreate... this is easier lol
     oldRoles.forEach((oldRole) => {
-        LevelRole.create({ server_id: oldRole.server_id, role_id: oldRole.server_id, level: oldRole.level });
+        LevelRole.create({ server_id: oldRole.server_id, role_id: oldRole.role_id, level: oldRole.level });
     });
 });
 await Old_PersonXP.findAll().then((oldXPs) => {
