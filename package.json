@@ -8,7 +8,7 @@
         "lint": "npx eslint .",
         "prettier": "npx prettier -w .",
         "prettier-logs": "./prettier-logs.bash",
-        "start": "npx tsc && node .",
+        "start": "npm install && npx tsc && node .",
         "mee6ripper": "node ./package/mee6ripper.js"
     },
     "type": "module",
